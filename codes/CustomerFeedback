@@ -1,0 +1,173 @@
+import java.awt.EventQueue;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.border.BevelBorder;
+import java.awt.Color;
+import javax.swing.JTextPane;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class CustomerFeedback extends JFrame {
+	
+	private ImageIcon bgs = new ImageIcon(
+			new ImageIcon( "C:\\\\\\\\Users\\\\\\\\mcpol\\\\\\\\eclipse-workspace\\\\\\\\FreeLancingEmmanProject\\\\\\\\backgrounds\\\\\\\\Homepage.png")
+					.getImage().getScaledInstance(1000, 700, Image.SCALE_DEFAULT));
+	private ImageIcon profile = new ImageIcon(
+			new ImageIcon( "C:\\Users\\mcpol\\eclipse-workspace\\FreeLancingEmmanProject\\buttons\\profileIcons (2).png")
+					.getImage().getScaledInstance(81, 78, Image.SCALE_DEFAULT));
+	private ImageIcon backs = new ImageIcon(
+			new ImageIcon( "C:\\Users\\mcpol\\eclipse-workspace\\FreeLancingEmmanProject\\buttons\\back.png")
+					.getImage().getScaledInstance(46, 39, Image.SCALE_DEFAULT));
+
+	private JPanel contentPane;
+	private JTextField textField;
+	public static boolean isFirstClick = true;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CustomerFeedback frame = new CustomerFeedback();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} 
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public CustomerFeedback() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 1000, 600);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel bgpanel = new JPanel();
+		bgpanel.setBounds(0, 0, 1000, 600);
+		contentPane.add(bgpanel);
+		bgpanel.setLayout(null);
+		
+		JLabel bglbl = new JLabel("");
+		bglbl.setBounds(0, 0, 1000, 600);
+		bglbl.setIcon(bgs);
+		bgpanel.add(bglbl);
+		
+		JLabel feedbackLbl = new JLabel("Feedback");
+		feedbackLbl.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 99));
+		feedbackLbl.setBounds(47, 36, 489, 85);
+		bglbl.add(feedbackLbl);
+		
+		JPanel feedbackpanel = new JPanel();
+		feedbackpanel.setOpaque(false);
+		feedbackpanel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), null, null, null));
+		feedbackpanel.setBounds(35, 143, 514, 446);
+		bglbl.add(feedbackpanel);
+		feedbackpanel.setLayout(null);
+		
+		JLabel profileIconlbl = new JLabel("");
+		profileIconlbl.setIcon(profile);
+		profileIconlbl.setVisible(false);
+		profileIconlbl.setBounds(10, 11, 81, 78);
+		feedbackpanel.add(profileIconlbl);
+		
+		JLabel feedbackusername = new JLabel("Boss, Eman");
+		feedbackusername.setVisible(false);
+		feedbackusername.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 33));
+		feedbackusername.setBounds(115, 29, 265, 42);
+		feedbackpanel.add(feedbackusername);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setOpaque(false);
+		textPane.setEditable(false);
+		textPane.setVisible(false);
+		textPane.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), null, null, null));
+		textPane.setFont(new Font("Cambria", Font.ITALIC, 22));
+		textPane.setBounds(10, 103, 494, 276);
+		feedbackpanel.add(textPane);
+		
+		textField = new JTextField();
+		textField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				if (textField.getText().equals("")) {
+					textField.setForeground(new Color(96, 96, 96));
+					textField.setText("Enter Feedback");
+				}
+			}
+
+			public void focusGained(FocusEvent e) {
+				if (textField.getText().equals("Enter Feedback")) {
+					textField.setForeground(Color.BLACK);
+					textField.setText("");
+				}
+			}
+		});
+		textField.setBounds(0, 390, 450, 56);
+		feedbackpanel.add(textField);
+		textField.setColumns(10);
+		
+		JButton sendBTN = new JButton("Send");
+		sendBTN.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            String send = textField.getText();
+
+	            if (isFirstClick) {
+	            	textField.setText(send);
+	                isFirstClick = false;
+	                profileIconlbl.setVisible(true);
+	                feedbackusername.setVisible(true);
+	                textPane.setVisible(true);
+	                
+	            } else {
+	            	textPane.setText(send);
+	                isFirstClick = true;
+	            }
+	        }
+	    });
+		sendBTN.setBounds(450, 390, 64, 56);
+		feedbackpanel.add(sendBTN);
+		
+		JLabel backlbl = new JLabel("");
+		backlbl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				CustomerFeedback frame = new CustomerFeedback();						
+				CustomerWindow cw = new CustomerWindow();
+				cw.display();
+				frame.dispose();
+				
+			}
+		});
+		backlbl.setIcon(backs);
+		backlbl.setBounds(944, 11, 46, 39);
+		bglbl.add(backlbl);
+		
+
+		
+	}
+}
